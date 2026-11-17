@@ -23,7 +23,7 @@ namespace EduTrack.Models
         //Navigation
         public Course? course { get; set; }
 
-        //الطالب الواحد بيسلم اكتر من ملف للحل
+        //الطالب الواحد بيسلم sاكتر من ملف للحل
         public List<Submission>? submissions { get; set; }
     }
 }
