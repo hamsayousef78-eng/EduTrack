@@ -25,6 +25,9 @@ namespace EduTrack.Models
 
         //الطالب الواحد بيسلم sاكتر من ملف للحل
         public List<Submission>? submissions { get; set; }
+
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }
 

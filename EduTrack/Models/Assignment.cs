@@ -14,7 +14,7 @@ namespace EduTrack.Models
 
         [Required(ErrorMessage = "تفاصيل التاسك مطلوبه")]
         [Display(Name = "شرح  المطلوب")]
-        public int Description { get; set; }
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "آخر موعد للتسليم مطلوب")]
         [Display(Name = "آخر موعد للتسليم ")]

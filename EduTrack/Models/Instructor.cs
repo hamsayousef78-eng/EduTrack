@@ -22,5 +22,9 @@ namespace EduTrack.Models
 
         //المحاضر الواحد بيدي اكتر من كورس
         public List<Course> ?courses { get; set; }
+
+
+        public string? UserId { get; set; }
+        public ApplicationUser? User { get; set; }
     }
 }

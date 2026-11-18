@@ -13,7 +13,7 @@ namespace EduTrack.Models
 
         [Required(ErrorMessage = "وصف الكورس مطلوب")]
         [Display(Name = "وصف الكورس")]
-        public int Description { get; set; }
+        public string Description { get; set; }
 
         [Required(ErrorMessage = "عدد ساعات الكورس مطلوب")]
         [Range(1, 500, ErrorMessage = "عدد الساعات يجب أن يكون بين 1 و 500")]

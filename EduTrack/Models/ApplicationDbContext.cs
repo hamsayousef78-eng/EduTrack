@@ -16,6 +16,17 @@ namespace EduTrack.Models
         public DbSet<Student> students { get; set; }
         public DbSet<Submission> submissions { get; set; }
         public DbSet<Assignment> assignments { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<Student>()
+     .HasOne(s => s.course)
+     .WithMany(c => c.students)
+     .HasForeignKey(s => s.CourseId)
+     .OnDelete(DeleteBehavior.NoAction);
+        }
     }
 
 }
