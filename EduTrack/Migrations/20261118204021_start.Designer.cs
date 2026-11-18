@@ -13,7 +13,7 @@ namespace EduTrack.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
     [Migration("20261118204021_start")]
-    partial class start
+    partial class Start
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
