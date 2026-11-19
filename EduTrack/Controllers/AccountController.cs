@@ -1,4 +1,5 @@
 ﻿using EduTrack.Models;
+using EduTrack.ViewModels;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -31,27 +32,33 @@ namespace EduTrack.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Register(string fullname, string email, string password)
+        public IActionResult Register(RegisterViewModel model)
         {
             ApplicationUser newUser = new ApplicationUser()
             {
-                FullName = fullname,
-                Email = email,
-                UserName = email
+                FullName = model.FullName,
+                Email = model.Email,
+                UserName = model.Email
             };
-            var result = _userManager.CreateAsync(newUser, password).Result;
+            var result = _userManager.CreateAsync(newUser, model.Password).Result;
             if (result.Succeeded == true)
             {
                 _userManager.AddToRoleAsync(newUser,"Student").Wait();
                 _signInManager.SignInAsync(newUser, isPersistent: false);
-            }
 
-            Student student = new Student();
-            student.UserId = newUser.Id;
-            //student.CourseId = courseId;
-            _context.students.Add(student);
-            _context.SaveChanges();
-            return RedirectToAction("Index");
+                Student student = new Student();
+                //بحط اي متغير انا عملاه انه مطلوب
+                student.FullName = model.FullName;
+                student.Phone = model.Phone;
+                student.UserId = newUser.Id;
+                student.CourseId = model.CourseId;
+                _context.students.Add(student);
+                _context.SaveChanges();
+                _signInManager.SignInAsync(newUser, isPersistent: false);
+                return RedirectToAction("Index", "Course");
+            }
+            return View();
+
         }
 
 
@@ -61,13 +68,13 @@ namespace EduTrack.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Login(string email, string password)
+        public IActionResult Login(LoginViewModel model)
         {
 
-            var result = _signInManager.PasswordSignInAsync(email, password, isPersistent: false, lockoutOnFailure: false).Result;
+            var result = _signInManager.PasswordSignInAsync(model.Email, model.Password, isPersistent: false, lockoutOnFailure: false).Result;
             if (result.Succeeded == true)
             {
-                return RedirectToAction("Index");
+                return RedirectToAction("Index","Home");
             }
             else
             {
@@ -80,10 +87,10 @@ namespace EduTrack.Controllers
         public IActionResult Logout()
         {
             _signInManager.SignOutAsync().Wait();
-            return RedirectToAction("Index");
+            return RedirectToAction("Index","Home");
         }
         //create SetupSystem
-        public IActionResult SetupSystem()
+        public async Task<IActionResult> SetupSystem()// التعامل مع قاعدة البيانات باستخدام await
         {
             //انشاء roles
             IdentityRole r1 = new IdentityRole();
@@ -94,16 +101,16 @@ namespace EduTrack.Controllers
             r3.Name = "Student";
 
             //عشان احفظ ل roles في الداتا بيز
-            _roleManager.CreateAsync(r1);
-            _roleManager.CreateAsync(r2);
-            _roleManager.CreateAsync(r3);
+            await _roleManager.CreateAsync(r1);//ابدأ العملية وانتظر اكتمالها قبل الانتقال للسطر التالي
+            await _roleManager.CreateAsync(r2);
+            await _roleManager.CreateAsync(r3);
 
             //create admin 
             ApplicationUser  Admin=new ApplicationUser();//مش عوزه احطه من ضمن ال اختيارات roles
             Admin.FullName = "hamsa";
             Admin.Email = "hamsa@gmail.com";
             Admin.UserName = "hamsa@gmail.com";
-            var result = _userManager.CreateAsync(Admin, "admin1234").Result;//انشاء حساب واحفظه في الداتا بيز
+            var result = await _userManager.CreateAsync(Admin, "admin1234");//انشاء حساب واحفظه في الداتا بيز
             if (result.Succeeded == true)
             {
                 _userManager.AddToRoleAsync(Admin,"Admin").Wait();//بضيف role للمستخدم
