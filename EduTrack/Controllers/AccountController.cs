@@ -44,7 +44,7 @@ namespace EduTrack.Controllers
             if (result.Succeeded == true)
             {
                 _userManager.AddToRoleAsync(newUser,"Student").Wait();
-                _signInManager.SignInAsync(newUser, isPersistent: false);
+               // _signInManager.SignInAsync(newUser, isPersistent: false);
 
                 Student student = new Student();
                 //بحط اي متغير انا عملاه انه مطلوب
