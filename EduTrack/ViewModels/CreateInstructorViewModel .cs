@@ -14,7 +14,7 @@ namespace EduTrack.ViewModels
 
 
         [Display(Name = "الصورة الشخصية")]
-        public string? ImagePath { get; set; }
+        public string? ImagePath { get; set; }//لي  IFormFile
 
         [Required(ErrorMessage = "البريد الإلكتروني مطلوب")]
         [Display(Name = "البريد الإلكتروني")]
