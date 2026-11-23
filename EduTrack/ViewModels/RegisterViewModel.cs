@@ -14,7 +14,7 @@ namespace EduTrack.ViewModels
 
         [Required(ErrorMessage = "رقم الهاتف مطلوب")]
         [Display(Name = "رقم الهاتف")]
-        public int Phone { get; set; }
+        public string Phone { get; set; }
 
         [Display(Name = "الجامعة / الكلية")]
         public string? University { get; set; }

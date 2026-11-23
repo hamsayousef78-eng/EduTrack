@@ -60,17 +60,15 @@ namespace EduTrack.Controllers
             if (result.Succeeded == true)
             {
                 _userManager.AddToRoleAsync(newUser, "Instructor").Wait();
-               // _signInManager.SignInAsync(newUser, isPersistent: false);
-
                 Instructor instructor = new Instructor();
                 //بحط اي متغير انا عملاه انه مطلوب
                 instructor.FullName = model.FullName;
-                //instructor.Specialization = model.Specialization;
+                instructor.Specialization = model.Specialization;
                 instructor.UserId = newUser.Id;
                 instructor.ImagePath = model.ImagePath;
                 _context.instructors.Add(instructor);
                 _context.SaveChanges();
-                _signInManager.SignInAsync(newUser, isPersistent: false);
+           
                 return RedirectToAction("Index", "Instructor");
             }
             return View();

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Identity.Client.NativeInterop;
 
 namespace EduTrack.Controllers
 {
@@ -99,7 +98,7 @@ namespace EduTrack.Controllers
         }
 
 
-
+        [Authorize]
         public IActionResult Details(int id)
         {
             var course = _context.courses.
@@ -118,31 +117,12 @@ namespace EduTrack.Controllers
                 return NotFound();
             }
         }
-    }
-        }
-        
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
         //save image
         private string SaveImage(IFormFile? imageFile)
         {
-            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "courses");
+            string uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images", "instructors");
 
             if (!Directory.Exists(uploadsFolder))
             {
@@ -155,24 +135,30 @@ namespace EduTrack.Controllers
             {
                 imageFile.CopyTo(fileStream);
             }
-            return $"/images/courses/{uniqueFileName}";
+            return $"/images/instructors/{uniqueFileName}";
         }
 
 
-        //delete image
-        private void DeleteImage(string imageUrl)
-        {
-            if (!string.IsNullOrEmpty(imageUrl))
-            {
-                string imagePath = Path.Combine(_webHostEnvironment.WebRootPath, imageUrl.TrimStart('/'));
 
-                if (System.IO.File.Exists(imagePath))
-                {
-                    System.IO.File.Delete(imagePath);
-                }
-            }
-
-
-        }
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

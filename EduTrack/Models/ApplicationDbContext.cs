@@ -17,7 +17,7 @@ namespace EduTrack.Models
         public DbSet<Submission> submissions { get; set; }
         public DbSet<Assignment> assignments { get; set; }
 
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected override void OnModelCreating(ModelBuilder modelBuilder)//تنظيم العلاقات بين الجداول
         {
             base.OnModelCreating(modelBuilder);
 

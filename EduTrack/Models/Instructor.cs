@@ -12,7 +12,7 @@ namespace EduTrack.Models
 
         [Required(ErrorMessage = "التخصص مطلوب")]
         [Display(Name = "التخصص")]
-        public int Specialization { get; set; }
+        public string Specialization { get; set; }
 
         [Display(Name = "الصورة الشخصية")]
         public string? ImagePath { get; set; }

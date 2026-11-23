@@ -34,6 +34,7 @@ namespace EduTrack.Controllers
         [HttpPost]
         public IActionResult Register(RegisterViewModel model)
         {
+            ViewBag.course = new SelectList(_context.courses.ToList(), "Id", "Title");
             ApplicationUser newUser = new ApplicationUser()
             {
                 FullName = model.FullName,
@@ -54,10 +55,10 @@ namespace EduTrack.Controllers
                 student.CourseId = model.CourseId;
                 _context.students.Add(student);
                 _context.SaveChanges();
-                _signInManager.SignInAsync(newUser, isPersistent: false);
+                _signInManager.SignInAsync(newUser, isPersistent: false).GetAwaiter().GetResult();
                 return RedirectToAction("Index", "Course");
             }
-            return View();
+            return View(model);
 
         }
 

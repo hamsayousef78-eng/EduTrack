@@ -44,7 +44,7 @@
                         @if (User.Identity != null && User.Identity.IsAuthenticated)
                         {
                             <li class="nav-item">
-                                <a class="nav-link" asp-controller="Courses" asp-action="Index">
+                                <a class="nav-link" asp-controller="Course" asp-action="Index">
                                     <i class="bi bi-journal-code me-1"></i> الكورسات
                                 </a>
                             </li>
@@ -66,7 +66,7 @@
                             @if (User.IsInRole("Student"))
                             {
                                 <li class="nav-item">
-                                    <a class="nav-link text-warning fw-semibold" asp-controller="Submissions" asp-action="MySubmissions">
+                                    <a class="nav-link text-warning fw-semibold" asp-controller="Submission" asp-action="MySubmissions">
                                         <i class="bi bi-cloud-check me-1"></i> تسليماتي ودرجاتي
                                     </a>
                                 </li>
