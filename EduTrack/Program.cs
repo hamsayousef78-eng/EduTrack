@@ -1,4 +1,5 @@
 using EduTrack.Models;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,6 +27,14 @@ namespace EduTrack
                 options.Password.RequireNonAlphanumeric = false;
             })
              .AddEntityFrameworkStores<ApplicationDbContext>();
+
+            // Keep the auth-cookie encryption keys on disk so users are not signed out
+            // every time the app pool recycles (common on shared hosting).
+            builder.Services.AddDataProtection()
+                .PersistKeysToFileSystem(new DirectoryInfo(
+                    Path.Combine(builder.Environment.ContentRootPath, "App_Data", "DataProtection-Keys")))
+                .SetApplicationName("EduTrack");
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.

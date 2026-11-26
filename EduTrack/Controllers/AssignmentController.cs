@@ -98,7 +98,7 @@ namespace EduTrack.Controllers
             _context.SaveChanges();
 
             TempData["Success"] = "تم نشر التاسك بنجاح";
-            return RedirectToAction("Details", "Course");
+            return RedirectToAction("Details");
         }
 
         [HttpGet]

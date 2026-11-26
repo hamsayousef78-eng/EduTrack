@@ -3,3 +3,12 @@
 **/obj/
 *.user
 *.suo
+
+# Runtime data (uploaded files, Data Protection keys)
+EduTrack/App_Data/
+EduTrack/wwwroot/uploads/*
+!EduTrack/wwwroot/uploads/.gitkeep
+EduTrack/wwwroot/images/courses/*
+!EduTrack/wwwroot/images/courses/.gitkeep
+EduTrack/wwwroot/images/instructors/*
+!EduTrack/wwwroot/images/instructors/.gitkeep

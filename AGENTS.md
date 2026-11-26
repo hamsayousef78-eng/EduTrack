@@ -19,8 +19,17 @@ EF Core:
 ## First run / data
 
 - After `database update`, open `/Account/SetupSystem` once to create the `Admin`/`Instructor`/`Student` roles and the admin `hamsa@gmail.com` / `admin1234`. It silently ignores duplicate-create failures, so reruns are harmless.
-- `appsettings.json` contains a committed connection string to a **shared remote SQL Server**. Treat that DB as shared: avoid destructive migrations or drop/recreate without confirmation.
+- `appsettings.json` holds the **local (in-datacenter)** connection string used when the site runs on MonsterASP.NET; it resolves to a private IP (`10.x.x.x`) and is **unreachable from a dev machine** (SQL error 53). `appsettings.Development.json` holds the **public** host (`dbXXXX.public.databaseasp.net`) and is what `dotnet run` uses locally.
+- Both DBs are the **same shared database**; migrations `20261118204021_start` and `20261123181614_editInstructor` are already applied. Treat it as shared: avoid destructive migrations or drop/recreate without confirmation.
 - A fresh DB has no instructors or courses. The admin must create an instructor first, then a course, before student registration works (the Register form requires a `CourseId`).
+
+## Deployment (MonsterASP.NET)
+
+- Publish with Visual Studio **Web Deploy** (Control Panel → website → Deploy → enable WebDeploy → download `.publishSettings`). Keep `appsettings.json` on the local connection string; the host runs in `Production`.
+- Run `/Account/SetupSystem` once after the first deploy (idempotent).
+- Data Protection keys persist to `App_Data/DataProtection-Keys` (wired in `Program.cs`) so app-pool recycles don't sign everyone out. `App_Data/` is gitignored.
+- `wwwroot/uploads/*` and `wwwroot/images/{courses,instructors}/*` are gitignored (only `.gitkeep` is tracked). Uploaded files live on the site's disk and are lost if a publish uses "Remove additional files at destination".
+- Publish is framework-dependent `net10.0`; if the host lacks the .NET 10 runtime, publish self-contained or retarget.
 
 ## Implementation state (do not assume features work)
 
