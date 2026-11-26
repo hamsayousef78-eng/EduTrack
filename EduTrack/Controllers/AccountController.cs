@@ -32,64 +32,35 @@ namespace EduTrack.Controllers
             return View();
         }
         [HttpPost]
-        [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(RegisterViewModel model)
+        public IActionResult Register(RegisterViewModel model)
         {
-            ViewBag.Courses = new SelectList(
-                _context.courses.ToList(), "Id", "Title", model.CourseId);
-
-            if (!ModelState.IsValid)
-            {
-                return View(model);
-            }
-
+            ViewBag.course = new SelectList(_context.courses.ToList(), "Id", "Title");
             ApplicationUser newUser = new ApplicationUser()
             {
                 FullName = model.FullName,
                 Email = model.Email,
                 UserName = model.Email
             };
-
-            var result = await _userManager.CreateAsync(newUser, model.Password);
-
-            if (result.Succeeded)
+            var result = _userManager.CreateAsync(newUser, model.Password).Result;
+            if (result.Succeeded == true)
             {
-                var roleResult = await _userManager.AddToRoleAsync(newUser, "Student");
+                _userManager.AddToRoleAsync(newUser, "Student").Wait();
+                // _signInManager.SignInAsync(newUser, isPersistent: false);
 
-                if (!roleResult.Succeeded)
-                {
-                    foreach (var error in roleResult.Errors)
-                    {
-                        ModelState.AddModelError("", error.Description);
-                    }
-
-                    await _userManager.DeleteAsync(newUser);
-                    return View(model);
-                }
-
-                Student student = new Student()
-                {
-                    FullName = model.FullName,
-                    Phone = model.Phone,
-                    UserId = newUser.Id,
-                    CourseId = model.CourseId
-                };
-
+                Student student = new Student();
+                //بحط اي متغير انا عملاه انه مطلوب
+                student.FullName = model.FullName;
+                student.Phone = model.Phone;
+                student.UserId = newUser.Id;
+                student.CourseId = model.CourseId;
                 _context.students.Add(student);
-                await _context.SaveChangesAsync();
-
-                await _signInManager.SignInAsync(newUser, false);
-
+                _context.SaveChanges();
+                _signInManager.SignInAsync(newUser, isPersistent: false).GetAwaiter().GetResult();
                 return RedirectToAction("Index", "Course");
             }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError("", error.Description);
-            }
-
             return View(model);
+
         }
 
 

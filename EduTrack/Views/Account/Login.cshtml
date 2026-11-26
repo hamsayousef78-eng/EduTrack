@@ -17,7 +17,12 @@
 
                 <form asp-controller="Account" asp-action="Login" method="post">
                     <div asp-validation-summary="All" class="text-danger small mb-3"></div>
-
+                    @if (ViewBag.Error != null)
+                    {
+                        <div class="alert alert-danger text-center">
+                            @ViewBag.Error
+                        </div>
+                    }
                     <div class="mb-3">
                         <label asp-for="Email" class="form-label fw-semibold"></label>
                         <div class="input-group">
