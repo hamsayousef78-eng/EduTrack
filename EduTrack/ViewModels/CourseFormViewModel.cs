@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Http;
+using System.ComponentModel.DataAnnotations;
 
 namespace EduTrack.ViewModels
 {
     public class CourseFormViewModel
     {
+        public int Id { get; set; }
+
         [Required(ErrorMessage = "اسم الكورس مطلوب")]
         [Display(Name = "اسم الكورس")]
         public string Title { get; set; }
@@ -19,10 +22,11 @@ namespace EduTrack.ViewModels
 
 
         [Display(Name = "صوره الغلاف")]
-        public string? ThumbnailFile { get; set; }//لي  imageFile
+        public IFormFile? ThumbnailFile { get; set; }
         public string? ExistingThumbnailPath { get; set; }
 
         [Required(ErrorMessage = " اختيار المحاضر")]
+        [Range(1, int.MaxValue, ErrorMessage = "يرجى اختيار المحاضر")]
         [Display(Name = "المحاضر")]
         public int InstructorId { get; set; }
 
