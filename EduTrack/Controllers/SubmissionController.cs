@@ -208,7 +208,7 @@ namespace EduTrack.Controllers
             _context.SaveChanges();
 
             TempData["Success"] = "تم رصد الدرجة بنجاح";
-            return RedirectToAction("Details", "Assignment");
+            return RedirectToAction("Details", "Assignment",new { id = submission.assignment.Id });
         }
 
         private GradeSubmissionViewModel MapGradeViewModel(Submission submission)
